@@ -1,30 +1,30 @@
 # Geth
 
-## Overview
+## Descripción General
 
 {% hint style="danger" %}
 :octagonal\_sign:**Strongly discouraged** :octagonal\_sign:**: GETH can be** [**hazardous to your all YOUR STAKE.**](https://twitter.com/EthDreamer/status/1749355402473410714)
 
-Select a minority client.&#x20;
+Seleccione un cliente minoritario.&#x20;
 
-**Recommendation:** Besu or Nethermind.
+**Recommendación:** Besu or Nethermind.
 {% endhint %}
 
 {% hint style="info" %}
-**Geth** - Go Ethereum is one of the three original implementations (along with C++ and Python) of the Ethereum protocol. It is written in **Go**, fully open source and licensed under the GNU LGPL v3.
+**Geth** - Go Ethereum es una de las tres implementaciones originales (junto con C++ y Python) del protocolo Ethereum. Está escrito en **Go**, es de código abierto y tiene licencia GNU LGPL v3..
 {% endhint %}
 
-#### Official Links
+#### Enlaces Oficiales
 
-| Subject       | Link                                                                                                 |
+| Temas         | Enlace                                                                                                 |
 | ------------- | ---------------------------------------------------------------------------------------------------- |
-| Releases      | [https://github.com/ethereum/go-ethereum/releases](https://github.com/ethereum/go-ethereum/releases) |
-| Documentation | [https://geth.ethereum.org/docs](https://geth.ethereum.org/docs)                                     |
-| Website       | [https://geth.ethereum.org](https://geth.ethereum.org/)                                              |
+| Lanzamientos      | [https://github.com/ethereum/go-ethereum/releases](https://github.com/ethereum/go-ethereum/releases) |
+| Documentación | [https://geth.ethereum.org/docs](https://geth.ethereum.org/docs)                                     |
+| Sitio Web      | [https://geth.ethereum.org](https://geth.ethereum.org/)                                              |
 
-### 1. Create service account and data directory
+### 1. Crear cuenta de servicio y directorio de datos
 
-Create a service user for the execution service, create data directory and assign ownership.
+Cree un usuario de servicio para el servicio de ejecución, cree un directorio de datos y asigne propiedad.
 
 ```bash
 sudo adduser --system --no-create-home --group execution
@@ -32,10 +32,10 @@ sudo mkdir -p /var/lib/geth
 sudo chown -R execution:execution /var/lib/geth
 ```
 
-### **2. Install binaries**
+### **2. Instalar binarios**
 
-* Downloading binaries is often faster and more convenient.&#x20;
-* Building from source code can offer better compatibility and is more aligned with the spirit of FOSS (free open source software).
+* La descarga de archivos binarios suele ser más rápida y cómoda.&#x20;
+* Construir a partir del código fuente puede ofrecer una mejor compatibilidad y está más alineado con el espíritu de FOSS (software gratuito de código abierto).
 
 <details>
 
@@ -54,7 +54,7 @@ rm geth.tar.gz
 sudo mv $HOME/geth-* geth
 </code></pre>
 
-Install the binaries.
+Instalar binarios.
 
 ```bash
 sudo mv $HOME/geth/geth /usr/local/bin
@@ -66,7 +66,7 @@ sudo mv $HOME/geth/geth /usr/local/bin
 
 <summary>Option 2 - Build from source code</summary>
 
-Install Go dependencies
+Instalar dependencias de Go
 
 ```bash
 wget -O go.tar.gz https://go.dev/dl/go1.19.6.linux-amd64.tar.gz
@@ -75,21 +75,21 @@ echo export PATH=$PATH:/usr/local/go/bin >> $HOME/.bashrc
 source $HOME/.bashrc
 ```
 
-Verify Go is properly installed by checking the version and cleanup files.
+Verifique que Go esté instalado correctamente verificando la versión y los archivos de limpieza.
 
 ```bash
 go version
 rm go.tar.gz
 ```
 
-Install build dependencies.
+Instalar dependencias de compilación.
 
 ```bash
 sudo apt-get update
 sudo apt install build-essential git
 ```
 
-Build the binary.
+Construye el binario.
 
 ```bash
 mkdir -p ~/git
@@ -106,22 +106,22 @@ git checkout $latestTag
 make geth
 ```
 
-Install the binary.
+instalar el binario.
 
 <pre class="language-bash"><code class="lang-bash"><strong>sudo cp $HOME/git/go-ethereum/build/bin/geth /usr/local/bin
 </strong></code></pre>
 
 </details>
 
-### **3. Setup and configure systemd**
+    ### **3. Instalar y configurar systemd**
 
-Create a **systemd unit file** to define your `execution.service` configuration.
+Cree un **archivo de unidad systemd** para definir su configuración `execution.service`.
 
 ```bash
 sudo nano /etc/systemd/system/execution.service
 ```
 
-Paste the following configuration into the file.
+Pegue la siguiente configuración en el archivo.
 
 <pre class="language-bash"><code class="lang-bash">[Unit]
 Description=Geth Execution Layer Client service for Mainnet
@@ -154,32 +154,32 @@ ExecStart=/usr/local/bin/geth \
 </strong>WantedBy=multi-user.target
 </code></pre>
 
-To exit and save, press `Ctrl` + `X`, then `Y`, then `Enter`.
+Para salir y guardar, presione `Ctrl` + `X`, luego `Y`, luego `Enter`.
 
-Run the following to enable auto-start at boot time.
+Ejecute lo siguiente para habilitar el inicio automático en el momento del arranque.
 
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable execution
 ```
 
-Finally, start your execution layer client and check it's status.
+Finalmente, inicie su cliente de capa de ejecución y verifique su estado.
 
 ```bash
 sudo systemctl start execution
 sudo systemctl status execution
 ```
 
-Press `Ctrl` + `C` to exit the status.
+Presione `Ctrl` + `C` para salir del estado.
 
-### 4. Helpful execution client commands
+### 4. Comandos útiles del cliente de ejecución
 
 {% tabs %}
 {% tab title="View Logs" %}
 <pre class="language-bash"><code class="lang-bash"><strong>sudo journalctl -fu execution | ccze
 </strong></code></pre>
 
-A properly functioning **Geth** execution client will indicate "Imported new potential chain segment". For example,
+Un cliente de ejecución **Geth** que funcione correctamente indicará "Nuevo segmento de cadena potencial importado". Por ejemplo,
 
 ```
 geth[4531]: INFO [02-04|01:20:48.280] Chain head was updated    number=16000 hash=2317ae..c41107
